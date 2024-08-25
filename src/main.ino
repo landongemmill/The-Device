@@ -49,6 +49,8 @@ void setup() {
 }
 
 void playOutput(bool isRoam, bool increment) {
+    tmrpcm.stopPlayback();
+    
     char filePath[50];
     File dir;
     
@@ -60,7 +62,7 @@ void playOutput(bool isRoam, bool increment) {
       if(currentFile < fileCount) {
         currentRoamFile += 1;
       } else {
-        currentRoamFile = 0;
+        currentRoamFile = 1;
       }
     } else {
       dir = SD.open("/");
@@ -69,7 +71,13 @@ void playOutput(bool isRoam, bool increment) {
         if(currentFile < fileCount) {
           currentFile += 1;
         } else {
-          currentFile = 0;
+          currentFile = 1;
+        }
+      } else {
+         if(currentFile > 1) {
+          currentFile -= 1;
+        } else {
+          currentFile = 1;
         }
       }
       sprintf(filePath, "/%d.wav", currentFile);
@@ -89,7 +97,7 @@ void playOutput(bool isRoam, bool increment) {
     Serial.println(filePath);
 
     tmrpcm.play(filePath);
-    while (tmrpcm.isPlaying()) {}
+    // while (tmrpcm.isPlaying()) {}
 
     lastRoam = millis();
 }
