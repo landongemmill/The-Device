@@ -117,7 +117,7 @@ void loop() {
   lastState1 = currentState1;
   lastState2 = currentState2;
 
-  if(millis() - lastRoam >= roamingTime) {
+  if(millis() - lastRoam >= roamingTime && !tmrpcm.isPlaying()) {
     playOutput(true, true);
   }
 }
